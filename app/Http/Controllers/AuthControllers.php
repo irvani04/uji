@@ -35,13 +35,19 @@ class AuthControllers extends Controller
         $request->validate([
             'name' => 'string|required|min:2',
             'email' => 'string|email|required|max:100|unique:users',
-            'password' => 'string|required|confirmed|min:8'
+            'password' => 'string|required|confirmed|min:8',
+            'address' => 'string|required|',
+            'gender' => 'required|',
+            'phone' => 'string|required|max:13'
         ]);
 
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
+        $user->address = $request->address;
+        $user->gender = $request->gender;
+        $user->phone = $request->phone;
         $user->save();
 
         return back()->with('success','Your Registration has been succefull.');

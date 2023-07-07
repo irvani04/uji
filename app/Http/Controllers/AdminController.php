@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Exam;
 use App\Models\User;
 use App\Models\Answer;
+use App\Models\Result;
 use App\Models\QnaExam;
 use App\Models\Subject;
 use App\Models\Question;
 use App\Models\ExamAnswer;
 use App\Models\ExamAttempt;
+use App\Models\Interview;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Mail;
@@ -153,7 +155,7 @@ class AdminController extends Controller
    public function qnaDashboard()
    {
      $questions = Question::with('answers')->get();
-     // @json() karo json() podo ketoke cobo sek
+    
      return view('admin.qnaDashboard',compact('questions'));
    }
 
@@ -384,7 +386,7 @@ class AdminController extends Controller
           }
      }
 
-
+     //review exam
      public function reviewExams()
      {
          $attempts =  ExamAttempt::with(['user','exam'])->orderBy('id')->get();
@@ -410,6 +412,8 @@ class AdminController extends Controller
 
      public function approvedQna(Request $request)
      {
+
+          // dd($request->all());
           try{
 
                $attemptId = $request->attempt_id;
@@ -427,7 +431,7 @@ class AdminController extends Controller
                     foreach($attemptData as $attempt){
 
                          if($attempt->answers->is_correct == 1){
-                              $totalMarks += $marks;
+                              $totalMarks += 1;
                          }
                     }
 
@@ -435,8 +439,11 @@ class AdminController extends Controller
 
                ExamAttempt::where('id',$attemptId)->update([
                     'status' => 1,
-                    'marks' => $totalMarks
+                    'marks' => $totalMarks,
+                    'score'=>$totalMarks*5
                ]);
+
+
 
                $url = URL::to('/');
 
@@ -457,4 +464,110 @@ class AdminController extends Controller
                return response()->json(['success'=>false,'msg'=>$e->getMessage()]);
           }
      }
+
+     public function seePoint(Request $request){
+        $data = ExamAnswer::with('answers')->where('attempt_id',$request->id)->get();
+     //    dd($data->toArray());?
+        $point = 0 ; 
+        foreach($data as $key => $val){
+          
+          if($val->answers->is_correct == "1"){
+               // echo "yes";
+               $point += 1;
+          }
+        }
+
+     //    dd($point);
+        return $point;
+        
+      }
+
+
+
+          // interview
+          public function interviews(){
+               // return $request->all();
+               $user = User::with('interview')->where('is_admin','!=','1')->orderBy('name','asc')->get();
+               return view('admin.interview',compact('user'));
+          }
+
+          public function addInterGet(Request $request)
+          {
+              $data = User::where('id',$request->id)->with(['exam_attemp'=>function($q){
+                    $q->with(['exam'=>function($q){
+                         $q->with('subjects');
+                    }]);
+              }])->get()->toArray();
+              $nilai_psikotest = null;
+              $nilai_tertulis= null;
+
+              foreach($data as $key => $val){
+                    foreach($val['exam_attemp'] as $a => $b){
+                         if(isset($b['exam']['subjects']['subject'])){
+                              if($b['exam']['subjects']['subject'] == "Psikotest"){
+                                   $nilai_psikotest = $b['score'];
+                              }
+                         }
+
+                         if(isset($b['exam']['subjects']['subject'])){
+                              if($b['exam']['subjects']['subject'] == "Tertulis"){
+                                   $nilai_tertulis = $b['score'];
+                              }
+                         }
+                    }
+                
+              }
+
+              return response()->json([
+                    'id'=>$data[0]['id'],
+                    'name'=>$data[0]['name'],
+                    'address'=>$data[0]['address'],
+                    'gender'=>$data[0]['gender'],
+                    'examp_psikotest'=>$nilai_psikotest,
+                    'examp_tertulis'=>$nilai_tertulis
+              ]);
+          }
+
+
+          public function seeInter(Request $request){
+               $data = Interview::find($request->id);
+               // dd($data->toArray());
+               return response()->json([
+                    'user_id' => $data->user_id,
+                    'user_name' => $data->user_name,
+                    'address' => $data->address,
+                    'gender'=> $data->gender,
+                    'n_tertulis' => $data->n_tertulis,
+                    'n_psikotes' => $data->n_psikotes,
+                    'n_kejujuran' =>$data->n_kejujuran,
+                    'n_komun' =>$data->n_komun,
+                    'n_kesop' =>$data->n_kesop,
+                    'n_praktek' =>$data->n_praktek
+              ]);
+          }
+          
+          public function addInterPost(Request $request){
+               // dd($request->all());
+               try{
+                    $unique_id = uniqid('exid');
+                    Interview::insert([
+                         'user_id' => $request->user_id,
+                         'user_name' => $request->user_name,
+                         'address' => $request->address,
+                         'gender'=> $request->gender,
+                         'n_tertulis' => $request->ntertulis,
+                         'n_psikotes' => $request->npsikotes,
+                         'n_kejujuran' =>$request->njujur,
+                         'n_komun' =>$request->nkom,
+                         'n_kesop' =>$request->nsopan,
+                         'n_praktek' =>$request->npraktek
+                    ]);
+                    return response()->json(['success'=>false,'msg'=>'added Successfully!']);
+          
+               }catch(\Exception $e){
+                    return response()->json(['success'=>false,'msg'=>$e->getMessage()]);
+               };
+          }
+         
+      
 }

@@ -2,19 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\QnaExam;
+use App\Models\Subject;
+use App\Models\ExamAttempt;
+use App\Models\User;
+use App\Models\Exam;
+use App\Models\Answer;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ExamAttempt extends Model
+class Result extends Model
 {
     use HasFactory;
-
-    public $table = "exams_attempt";
+    public $table = "result";
 
     protected $fillable = [
         'exam_id',
         'user_id',
-        'score'
+        'point'
     ];
 
     public function user()

@@ -36,9 +36,9 @@
                     <tr>
                         <td>{{ $exam->id }}</td>
                         <td>{{ $exam->exam_name }}</td>
-                        <td>{{ $exam->subjects[0]['subject'] }}</td>
+                        <td>{{ isset($exam->subjects->subject)?$exam->subjects->subject:'' }}</td>
                         <td>{{ $exam->date }}</td>
-                        <td>{{ $exam->time }}Hrs</td>
+                        <td>{{ $exam->time }}</td>
                         <td>{{ $exam->attempt }} Time</td>
                         <td>
                             <a href="#" class="addQuestion" data-id="{{ $exam->id }}" data-toggle="modal"
@@ -273,7 +273,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
+    
                 </div>
             </div>
         </div>

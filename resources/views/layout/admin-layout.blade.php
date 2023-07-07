@@ -29,7 +29,7 @@
                     <span class="sr-only">Admin Dashboard</span>
                 </button>
             </div>
-            <h1><a href="/admin/dashboard" class="logo">Project Name</a></h1>
+            <h1><a href="/admin/dashboard" class="logo">Hi, Admin!</a></h1>
             <ul class="list-unstyled components mb-5">
                 <li class="active">
                     <a href="/admin/dashboard"><span class="fa fa-book mr-3"></span> Subjects</a>
@@ -37,9 +37,9 @@
                 <li class="active">
                     <a href="/admin/exam"><span class="fa fa-tasks mr-3"></span>Exam</a>
                 </li>
-                <li class="active">
+                {{-- <li class="active">
                     <a href="/admin/marks"><span class="fa fa-check mr-3"></span>Marks</a>
-                </li>
+                </li> --}}
                 <li class="active">
                     <a href="/admin/qna-ans"><span class="fa fa-question-circle mr-3"></span>Q&A</a>
                 </li>
@@ -48,6 +48,15 @@
                 </li>
                 <li class="active">
                     <a href="/admin/review-exams"><span class="fa fa-file-text-o mr-3"></span>Exam Review</a>
+                </li>
+                <li class="active">
+                    <a href="/admin/inter"><span class="fa fa-users mr-3"></span>Interview</a>
+                </li>
+                <li class="active">
+                    <a href=""><span class="fa fa-paperclip mr-3"></span>Result SAW</a>
+                </li>
+                <li class="active">
+                    <a href=""><span class="fa fa-paperclip mr-3"></span>Result K-NN</a>
                 </li>
                 <li>
                     <a href="/logout"><span class="fa fa-sign-out mr-3"></span> Logout</a>

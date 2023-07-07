@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthControllers;
 use App\Http\Controllers\ViewController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\InterviewControllers;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,8 +89,27 @@ Route::group(['middleware'=>['web','checkAdmin']],function(){
     //exam review routes
     Route::get('/admin/review-exams',[AdminController::class,'reviewExams'])->name('reviewExams');
     Route::get('/admin/get-reviewed-qna',[AdminController::class,'reviewQna'])->name('reviewQna');
+    Route::get('/admin/get-seepoint',[AdminController::class,'seePoint'])->name('seePoint');
 
     Route::post('/approved-qna',[AdminController::class,'approvedQna'])->name('approvedQna');
+
+
+    //interview
+    Route::get('/admin/inter',[AdminController::class,'interviews'])->name('interviews');
+    Route::post('/add-inter',[AdminController::class,'addInterPost'])->name('addInterPost');
+    Route::get('/add-inter',[AdminController::class,'addInterGet'])->name('addInterGet');
+    Route::get('/admin/get-seeinter',[AdminController::class,'seeInter'])->name('seeInter');
+
+
+
+    //saw route
+    Route::get('/admin/{type}',[AdminController::class,'interviews'])->name('interviews');
+
+
+
+
+    //knn route
+    
 });
 
 Route::group(['middleware'=>['web','checkStudent']],function(){

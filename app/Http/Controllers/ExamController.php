@@ -49,6 +49,8 @@ class ExamController extends Controller
     public function examSubmit(Request $request)
     {
 
+        // dd($request->ans_1);
+
         $cek = Exam::find($request->exam_id);
         if($cek){
             if($cek->attempt < 1){
@@ -62,15 +64,15 @@ class ExamController extends Controller
         
                 $qcount = count($request->q);
                 if($qcount > 0){
-        
-                    for($i = 0; $i < $qcount; $i++){
-                        if(!empty($request->input('ans_'.($i)))){
-                            ExamAnswer::insert([
-                                'attempt_id' => $attempt_id,
-                                'question_id' => $request->q[$i],
-                                'answer_id' => request()->input('ans_'.($i+1))
-                            ]);
-                        }
+                        foreach($request->q as $key => $v){
+                        $k='ans_'.$key+1;
+                        $arrv=[
+                            'attempt_id' => $attempt_id,
+                            'question_id' => $request->q[$key],
+                            'answer_id' =>$request->$k ,
+                        ];
+                            ExamAnswer::insert($arrv);
+                          
                       
                     }
                 }
@@ -88,6 +90,7 @@ class ExamController extends Controller
        $attempts = ExamAttempt::where('user_id',Auth()->user()->id)->with('exam')->orderBy('updated_at')->get();
        return view('student.results',compact('attempts'));
     }
+
 
 
     public function reviewQna(Request $request)

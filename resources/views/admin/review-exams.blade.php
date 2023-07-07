@@ -11,11 +11,14 @@
             <th>Exam</th>
             <th>Status</th>
             <th>Review</th>
+            <th>Point</th>
         </thead>
         <tbody>
-
+            @php
+                $x = 1;
+                $a = 10;
+            @endphp
             @if (count($attempts) > 0)
-                @php $x = 1; @endphp
                 @foreach ($attempts as $attempt)
                     <tr>
                         <td>{{ $x++ }}</td>
@@ -36,6 +39,17 @@
                                 Completed!
                             @endif
                         </td>
+                        <td>
+                            {{-- @if ($attempt->answers->is_correct == 1)
+                                        {{ $attempt*$a }}
+                                    @else
+                                        <span style="color:red">0</span>
+                                    @endif --}}
+
+                            <button class="btn btn-primary seePoint" data-toggle="modal" data-target="#seePointModal"
+                                data-id="{{ $attempt->id }}" id="seeklik">See</button>
+                        </td>
+
                     </tr>
                 @endforeach
             @else
@@ -71,6 +85,35 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="seePointModal" tabindex="-1" role="dialog" aria-labelledby="seePointModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Point</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="seePoint">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <center>
+                                <h2 id="pointnya"></h2>
+                            </center>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 
@@ -164,6 +207,23 @@
                 });
 
             });
+
+            $("#seePointModal").on("show.bs.modal", function(event) {
+                $.ajax({
+                    url: "{{ route('seePoint') }}",
+                    type: "GET",
+                    data: {
+                        'id': $(event.relatedTarget).data('id'),
+                        '_token': '{{ csrf_token() }}'
+
+                    },
+                    success: function(data) {
+                      $("#pointnya").html(data);
+                    }
+                });
+            });
+
+
         });
     </script>
 @endsection

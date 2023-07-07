@@ -29,7 +29,7 @@
                     <a href="/dashboard"><span class="fa fa-book mr-3"></span> Dashboard </a>
                 </li>
                 <li class="active">
-                    <a href="/results"><span class="fa fa-list-alt mr-3"></span> Result </a>
+                    <a href="{{ route('resultDashboard') }}"><span class="fa fa-list-alt mr-3"></span> Result </a>
                 </li>
                 <li>
                     <a href="/logout"><span class="fa fa-sign-out mr-3"></span> Logout</a>

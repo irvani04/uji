@@ -1,7 +1,7 @@
 @extends('layout/admin-layout')
 
 @section('space-work')
-    <h2 class="mb4"> Students </h2>
+    <h2 class="mb4"> Users </h2>
 
     <table class="table">
         <thead>
