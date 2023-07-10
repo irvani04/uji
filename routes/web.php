@@ -104,6 +104,7 @@ Route::group(['middleware'=>['web','checkAdmin']],function(){
 
     //saw route
     Route::get('/admin/{type}',[AdminController::class,'interviews'])->name('interviews');
+   
 
 
 

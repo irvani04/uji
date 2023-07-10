@@ -8,7 +8,7 @@
             <th>#</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Detail</th>
+    
             <th>Delete</th>
         </thead>
         <tbody>
@@ -18,10 +18,7 @@
                         <td>{{ $student->id }}</td>
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->email }}</td>
-                        <td>
-                            <button class="btn btn-info editButton" data-id="" data-toggle="modal"
-                                data-target="">Detail</button>
-                        </td>
+
                         <td>
                             <button class="btn btn-danger deleteButton" data-id="{{ $student->id }}" data-toggle="modal"
                                 data-target="#deleteStudentModal">Delete</button>

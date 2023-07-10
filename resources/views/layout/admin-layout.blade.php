@@ -54,6 +54,12 @@
                 </li>
                 <li class="active">
                     <a href=""><span class="fa fa-paperclip mr-3"></span>Result SAW</a>
+                    <ul>
+                        <a href="">Kriteria</a>
+                    </ul>
+                    <ul>
+                        <a href="">Hitung</a>
+                    </ul>
                 </li>
                 <li class="active">
                     <a href=""><span class="fa fa-paperclip mr-3"></span>Result K-NN</a>
