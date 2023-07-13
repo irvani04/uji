@@ -1,10 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthControllers;
+use App\Http\Controllers\SawController;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ViewController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ExamController;
+use App\Http\Controllers\AuthControllers;
+use App\Http\Controllers\HitungController;
+use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\InterviewControllers;
 
 /*
@@ -103,10 +106,10 @@ Route::group(['middleware'=>['web','checkAdmin']],function(){
 
 
     //saw route
-    Route::get('/admin/{type}',[AdminController::class,'interviews'])->name('interviews');
-   
 
-
+    Route::resource('saw', SawController::class);
+    Route::resource('kriteria',KriteriaController::class);
+    Route::resource('hitung',HitungController::class);
 
 
     //knn route

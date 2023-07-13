@@ -1,7 +1,7 @@
 @extends('layout/admin-layout')
 
 @section('space-work')
-    <h2 class="mb4"> Result SAW </h2>
+    <h2 class="mb4"> Hitung SAW </h2>
 
 
     <div class="card">
@@ -35,6 +35,7 @@
 
                         </tbody>
                     </table>
+                    <center><button type="submit" class="btn btn-sm btn-primary float">Hitung</button></center>
                 </div>
                 <!-- script -->
                 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -48,7 +49,7 @@
             table = $('#data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                url: "{{ route('saw.index') }}",
+                url: "{{ route('hitung.index') }}",
                 columns: [{
                         data: 'DT_RowIndex'
                     },

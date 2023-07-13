@@ -13,8 +13,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="{{ asset('js/multiselect-dropdown.js') }}"></script>
     <style>
-        .multiselect-dropdown{
-            width:100% !important;
+        .multiselect-dropdown {
+            width: 100% !important;
         }
     </style>
 </head>
@@ -53,16 +53,22 @@
                     <a href="/admin/inter"><span class="fa fa-users mr-3"></span>Interview</a>
                 </li>
                 <li class="active">
-                    <a href=""><span class="fa fa-paperclip mr-3"></span>Result SAW</a>
+                    <a href={{ route('saw.index') }}><span class="fa fa-paperclip mr-3"></span>Result SAW</a>
                     <ul>
-                        <a href="">Kriteria</a>
+                        <a href="{{ route('kriteria.index')}}">Kriteria</a>
                     </ul>
                     <ul>
-                        <a href="">Hitung</a>
+                        <a href={{ route('hitung.index') }}>Hitung</a>
                     </ul>
                 </li>
                 <li class="active">
                     <a href=""><span class="fa fa-paperclip mr-3"></span>Result K-NN</a>
+                    <ul>
+                        <a href="">Data Training</a>
+                    </ul>
+                    <ul>
+                        <a href="">Hitung</a>
+                    </ul>
                 </li>
                 <li>
                     <a href="/logout"><span class="fa fa-sign-out mr-3"></span> Logout</a>

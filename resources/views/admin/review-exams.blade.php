@@ -16,7 +16,7 @@
         <tbody>
             @php
                 $x = 1;
-                $a = 10;
+       
             @endphp
             @if (count($attempts) > 0)
                 @foreach ($attempts as $attempt)
