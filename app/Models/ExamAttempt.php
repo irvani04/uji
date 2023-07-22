@@ -25,5 +25,7 @@ class ExamAttempt extends Model
     public function exam()
     {
         return $this->hasOne(Exam::class,'id','exam_id');
+       
     }
+
 }

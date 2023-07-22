@@ -374,8 +374,11 @@ class AdminController extends Controller
      //review exam
      public function reviewExams()
      {
-          $attempts =  ExamAttempt::with(['user', 'exam'])->orderBy('id')->get();
+          $attempts =  ExamAttempt::with(['user','exam'])->get();
 
+          // $data = Exam::select('id', 'exam_name')->get();
+
+         
           return view('admin.review-exams', compact('attempts'));
      }
 
@@ -468,29 +471,32 @@ class AdminController extends Controller
      {
           // return $request->all();
           $user = User::with('interview')->where('is_admin', '!=', '1')->orderBy('name', 'asc')->get();
+          // return $user;
           return view('admin.interview', compact('user'));
      }
 
      public function addInterGet(Request $request)
      {
-          $data = User::where('id', $request->id)->with(['exam_attemp' => function ($q) {
+
+          $data = User::where('id', $request->id)->with(['exam_attempt' => function ($q) {
                $q->with(['exam' => function ($q) {
                     $q->with('subjects');
                }]);
           }])->get()->toArray();
-          $nilai_psikotest = null;
+          // dd($data);
+          $nilai_psikotest = null; 
           $nilai_tertulis = null;
 
           foreach ($data as $key => $val) {
-               foreach ($val['exam_attemp'] as $a => $b) {
+               foreach ($val['exam_attempt'] as $a => $b) {
                     if (isset($b['exam']['subjects']['subject'])) {
-                         if ($b['exam']['subjects']['subject'] == "Psikotest") {
+                         if ($b['exam']['subjects']['subject'] == "psikotest") {
                               $nilai_psikotest = $b['score'];
                          }
                     }
 
                     if (isset($b['exam']['subjects']['subject'])) {
-                         if ($b['exam']['subjects']['subject'] == "Tertulis") {
+                         if ($b['exam']['subjects']['subject'] == "tertulis") {
                               $nilai_tertulis = $b['score'];
                          }
                     }
@@ -512,6 +518,8 @@ class AdminController extends Controller
      {
           $data = Interview::find($request->id);
           // dd($data->toArray());
+
+          // return $data;
           return response()->json([
                'user_id' => $data->user_id,
                'user_name' => $data->user_name,

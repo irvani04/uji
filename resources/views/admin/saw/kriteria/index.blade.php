@@ -24,7 +24,6 @@
                                 <th> Nama </th>
                                 <th> Kriteria </th>
                                 <th> Bobot </th>
-                                <th> Aksi </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,55 +89,10 @@ aria-hidden="true">
                     {
                         data: 'bobot'
                     },
-                    {data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
             });
 
-            $(".editButton").click(function() {
-                var id = $(this).attr('data-id');
-                $("#exam_id").val(id);
-
-                var url = '{{ route('getExamDetail', 'id') }}';
-                url = url.replace('id', id);
-
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    success: function(data) {
-                        if (data.success == true) {
-                            var exam = data.data;
-                            $("#exam_name").val(exam[0].exam_name);
-                            $("#subject_id").val(exam[0].subject_id);
-                            $("#date").val(exam[0].date);
-                            $("#time").val(exam[0].time);
-                            $("#attempt").val(exam[0].attempt);
-                        } else {
-                            alert(data.msg);
-                        }
-                    }
-                });
-            });
-
-            $("#editCriteria").submit(function(e) {
-                e.preventDefault();
-
-                var formData = $(this).serialize();
-
-                $.ajax({
-                    url: "{{ route('kriteria.index') }}",
-                    type: "POST",
-                    data: formData,
-                    success: function(data) {
-                        if (data.success == true) {
-                            location.reload();
-                        } else {
-                            alert(data.msg);
-                        }
-                    }
-                });
-            });
-
-
+           
         });
 
         

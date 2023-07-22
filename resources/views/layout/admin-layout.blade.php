@@ -53,18 +53,18 @@
                     <a href="/admin/inter"><span class="fa fa-users mr-3"></span>Interview</a>
                 </li>
                 <li class="active">
-                    <a href={{ route('saw.index') }}><span class="fa fa-paperclip mr-3"></span>Result SAW</a>
+                    <a href=""><span class="fa fa-paperclip mr-3"></span>Result SAW</a>
                     <ul>
-                        <a href="{{ route('kriteria.index')}}">Kriteria</a>
+                        <a href={{ route('kriteria.index')}}>Kriteria</a>
                     </ul>
                     <ul>
-                        <a href={{ route('hitung.index') }}>Hitung</a>
+                        <a href={{ route('saw.index') }}>Hitung</a>
                     </ul>
                 </li>
                 <li class="active">
                     <a href=""><span class="fa fa-paperclip mr-3"></span>Result K-NN</a>
                     <ul>
-                        <a href="">Data Training</a>
+                        <a href={{ route('knn.index') }}>Data Training</a>
                     </ul>
                     <ul>
                         <a href="">Hitung</a>

@@ -8,11 +8,11 @@
         <thead>
             <th>#</th>
             <th>Exam Name</th>
-            <th>Subject Name</th>
+            {{-- <th>Subject Name</th> --}}
             <th>Date</th>
             <th>Time</th>
-            <th>Total Attempt</th>
-            <th>Available Attempt</th>
+            {{-- <th>Total Attempt</th>
+            <th>Available Attempt</th> --}}
             <th>Copy Link</th>
         </thead>
 
@@ -24,11 +24,11 @@
                         <td style="display:none;">{{ $exam->id }}</td>
                         <td>{{ $count++ }}</td>
                         <td>{{ $exam->exam_name }}</td>
-                        <td>{{ $exam->subjects[0]['subject'] }}</td>
+                        {{-- <td>{{ $exam->subjects }}</td> --}}
                         <td>{{ $exam->date }}</td>
-                        <td>{{ $exam->time }} Hrs</td>
-                        <td>{{ $exam->attempt }} Time</td>
-                        <td>{{ $exam->attempt_counter }}</td>
+                        <td>{{ $exam->time }} </td>
+                        {{-- <td>{{ $exam->attempt }} Time</td>
+                        <td>{{ $exam->attempt_counter }}</td> --}}
                         <td><a href="#" class="copy" data-code="{{ $exam->enterance_id }}"><i class="fa fa-copy"></i></a></td>
                     </tr>
                 @endforeach

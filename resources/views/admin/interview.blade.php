@@ -70,7 +70,7 @@
                         <input type="text" name="ntertulis" id="ntertulis_see" placeholder="Enter Nilai Tertulis"
                             class="w-100" required>
                         <br><br>
-                        <input type="text" name="npsikotes" id="npsikotes_see"  disabled placeholder="Enter Nilai Psikotes"
+                        <input type="text" name="npsikotes" id="npsikotes_see"  placeholder="Enter Nilai Psikotes"
                             class="w-100" required>
                         <br><br>
                         <input type="text" name="njujur" id="njujur_see"  placeholder="Enter Nilai Kejujuran" class="w-100"
@@ -150,7 +150,7 @@
     <!--JS below-->
     <script>
         $(document).ready(function() {
-            $("body").on('click',"#pointklik",function(e) {
+            $("body").on('click',"#pointklik",function(e) { 
                 $.ajax({
                     url: "{{ route('addInterGet') }}",
                     type: "GET",
@@ -204,7 +204,7 @@
                         $("#njujur_see").val(data.n_kejujuran);
                         $("#nkom_see").val(data.n_komun);
                         $("#npraktek_see").val(data.n_praktek);
-                        $("#npsikotes_see").val(data.n_psikotest);
+                        $("#npsikotes_see").val(data.n_psikotes);
                     }
                 });
             });

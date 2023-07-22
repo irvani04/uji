@@ -2,32 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Interview;
 use Illuminate\Http\Request;
-use Yajra\Datatables\Datatables;
 
-class HitungController extends Controller
+class HitungSAWController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         //
-        if ($request->ajax()) {
-            $data = Interview::select('user_name', 'n_komun', 'n_kejujuran', 'n_kesop', 'n_psikotes', 'n_tertulis', 'n_praktek')->get();
-            // return $data;
-
-
-            return Datatables::of($data)
-                 ->addIndexColumn()
-                 ->make(true);
-       }
-
-       return view('admin.saw.hitung.index', [
-            'title' => 'Data Hitung',
-
-       ]);
     }
 
     /**

@@ -22,20 +22,19 @@
                         <thead class="text-center">
                             <tr>
                                 <th> No </th>
-                                <th> Nama </th>
-                                <th> Komunikasi </th>
-                                <th> Kejujuran </th>
-                                <th> Kesopanan </th>
-                                <th> Kepribadian </th>
-                                <th> Pengetahuan </th>
-                                <th> Praktek </th>
+                                <th> Alternatif </th>
+                                <th> C1 </th>
+                                <th> C2 </th>
+                                <th> C3 </th>
+                                <th> C4 </th>
+                                <th> C5 </th>
+                                <th> C6 </th>
                             </tr>
                         </thead>
                         <tbody>
 
                         </tbody>
                     </table>
-                    <center><button type="submit" class="btn btn-sm btn-primary float">Hitung</button></center>
                 </div>
                 <!-- script -->
                 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -49,30 +48,9 @@
             table = $('#data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                url: "{{ route('hitung.index') }}",
+                url: "{{ route('') }}",
                 columns: [{
                         data: 'DT_RowIndex'
-                    },
-                    {
-                        data: 'user_name'
-                    },
-                    {
-                        data: 'n_komun'
-                    },
-                    {
-                        data: 'n_kejujuran'
-                    },
-                    {
-                        data: 'n_kesop'
-                    },
-                    {
-                        data: 'n_psikotes'
-                    },
-                    {
-                        data: 'n_tertulis'
-                    },
-                    {
-                        data: 'n_praktek'
                     },
                 ],
             });

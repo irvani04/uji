@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthControllers;
 use App\Http\Controllers\HitungController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\InterviewControllers;
+use App\Http\Controllers\KnnController;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,11 +110,12 @@ Route::group(['middleware'=>['web','checkAdmin']],function(){
 
     Route::resource('saw', SawController::class);
     Route::resource('kriteria',KriteriaController::class);
-    Route::resource('hitung',HitungController::class);
-
+    // Route::resource('')
+    
 
     //knn route
     
+    Route::resource('knn', KnnController::class);
 });
 
 Route::group(['middleware'=>['web','checkStudent']],function(){

@@ -50,6 +50,7 @@
                     <br>
                         <input type="submit" value="Register">
                         <br><br>
+                       
                     </form>
                     </div>
                 </div>
