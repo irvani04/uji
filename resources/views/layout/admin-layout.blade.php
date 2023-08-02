@@ -55,7 +55,7 @@
                 <li class="active">
                     <a href=""><span class="fa fa-paperclip mr-3"></span>Result SAW</a>
                     <ul>
-                        <a href={{ route('kriteria.index')}}>Kriteria</a>
+                        <a href={{ route('kriteria.index') }}>Kriteria</a>
                     </ul>
                     <ul>
                         <a href={{ route('saw.index') }}>Hitung</a>
@@ -65,9 +65,6 @@
                     <a href=""><span class="fa fa-paperclip mr-3"></span>Result K-NN</a>
                     <ul>
                         <a href={{ route('knn.index') }}>Data Training</a>
-                    </ul>
-                    <ul>
-                        <a href="">Hitung</a>
                     </ul>
                 </li>
                 <li>
@@ -84,9 +81,9 @@
     </div>
 
     {{-- <script src="{{ asset('js/jquery.min.js') }}"></script> --}}
-    <script src="{{ asset('js/js/popper.js') }}"></script>
-    <script src="{{ asset('js/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/js/main.js') }}"></script>
+    <script src="{{ asset('js/popper.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
 </body>
 
 </html>

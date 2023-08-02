@@ -16,7 +16,7 @@
 <body>
     @yield('space-work')
 
-    <script src="{{ asset('js/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 </body>
 
 </html>

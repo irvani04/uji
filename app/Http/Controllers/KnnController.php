@@ -6,6 +6,7 @@ use App\Models\DataTraining;
 use App\Models\Interview;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
+use Phpml\Classification\KNearestNeighbors;
 
 class KnnController extends Controller
 {
@@ -21,14 +22,14 @@ class KnnController extends Controller
 
 
             return Datatables::of($data)
-                 ->addIndexColumn()
-                 ->make(true);
-       }
+                ->addIndexColumn()
+                ->make(true);
+        }
 
-       return view('admin.knn.index', [
+        return view('admin.knn.index', [
             'title' => 'Data Training',
 
-       ]);
+        ]);
     }
 
     /**
@@ -36,64 +37,61 @@ class KnnController extends Controller
      */
     public function create()
     {
-        $training = [];
-        $point1 = DataTraining::select('id','nama', 'komun', 'kejur', 'kesop', 'keprib', 'penget', 'praktek', 'hasil')->get();
-        $point2 = Interview::select('user_name', 'n_komun', 'n_kejujuran', 'n_kesop', 'n_psikotes', 'n_tertulis', 'n_praktek', 'hasil')->get();
-        // return $point1;
-        $i = 0;
-        foreach($point1 as $data){
+        // $point1 = DataTraining::select('id', 'nama', 'komun', 'kejur', 'kesop', 'keprib', 'penget', 'praktek', 'hasil')->get();
+        // // return $point1;
+        // $hasil = $point1->pluck('hasil')->toArray();
 
-            $komunScoreDiff = $data->komun - $point2[$i]->n_komun;
-            $jujurScoreDiff = $data->kejur - $point2[$i]->n_kejujuran;
-            $sopanScoreDiff = $data->kesop - $point2[$i]->n_kesop;
-            $psikotesScoreDiff = $data->keprib - $point2[$i]->n_psikotes;
-            $tulisScoreDiff = $data->penget - $point2[$i]->n_tertulis;
-            $praktekScoreDiff = $data->praktek - $point2[$i]->n_praktek;
-            
-            $distance = sqrt(pow($komunScoreDiff, 2) + pow($jujurScoreDiff, 2) + pow($sopanScoreDiff, 2) + pow($psikotesScoreDiff, 2) + pow( $tulisScoreDiff, 2) + pow($praktekScoreDiff, 2));
-            
-            $array= [
-                'id'        => $data->id,
-                'komun'     => $komunScoreDiff,
-                'jujur'     => $jujurScoreDiff,
-                'sopan'     => $sopanScoreDiff,
-                'psikotest' => $psikotesScoreDiff,
-                'tulis'     => $tulisScoreDiff,
-                'praktek'   => $praktekScoreDiff,
-                'distance'  => $distance
-            ];
 
-            $result[] = $array;
+        // foreach ($point1 as $data) {
+        //     $array = [
+        //         intval($data->komun),
+        //         intval($data->kejur),
+        //         intval($data->kesop),
+        //         intval($data->keprib),
+        //         intval($data->penget),
+        //         intval($data->praktek),
+        //     ];
 
-            $i++;
-    
-        }
+        //     $result[] = $array;
+        // }
 
-        // ambil kolom hasil
-        $hasil = (array_column($result,'distance','id'));
+        // $classifier = new KNearestNeighbors($k = 5);
+        //  $classifier->train($result, $hasil);
 
-        asort($hasil);
+        // // return $classifier;
 
-        $array_min = array_slice($hasil, 0, 3, true);
-return $array_min;
-        // Hitung jumlah pelamar yang diterima dan yang gagal di antara tetangga terdekat
-        $lulusCount = 0;
-        $gagalCount = 0;
-        foreach ($array_min as $id => $array_min ) {
+        // $point2 = Interview::select('user_name', 'n_komun', 'n_kejujuran', 'n_kesop', 'n_psikotes', 'n_tertulis', 'n_praktek')->get();
 
-            $allInterview = DataTraining::find($id);
-            if ($allInterview->hasil == 'Lulus') {
-                $lulusCount++;
-            } else {
-                $gagalCount++;
-            }
-        }
+        // foreach ($point2 as $data) {
+        //     $array = [
+        //         intval($data->n_komun),
+        //         intval($data->n_kejujuran),
+        //         intval($data->n_kesop),
+        //         intval($data->n_psikotes),
+        //         intval($data->n_tertulis),
+        //         intval($data->n_praktek),
+        //     ];
 
-        // Tentukan hasil klasifikasi berdasarkan mayoritas
-        $result = $lulusCount > $gagalCount ? 'Lulus' : 'Gagal';
+        //     $result2[] = $array;
+        // }
 
-        return response()->json(['result' => $result]);
-        
+        // $prediksi = $classifier->predict($result2);
+        // // return $prediksi;
+
+        // $i = 0;
+        // foreach ($point2 as $data) {
+        //     $array = [
+        //         'nama' => $data->user_name,
+        //         'prediksi' => $prediksi[$i]
+        //     ];
+        //     $i++;
+
+        //     $result3[] = $array;
+        // }
+
+        // return Datatables::of($result3)
+        //     ->addIndexColumn()
+        //     ->make(true);
     }
 
     /**
@@ -101,48 +99,7 @@ return $array_min;
      */
     public function store(Request $request)
     {
-        $komunScore = $request->input('n_komun');
-        $jujurScore = $request->input('n_kejujuran');
-        $sopanScore = $request->input('n_kesop');
-        $psikotesScore = $request->input('n_psikotes');
-        $tulisScore = $request->input('n_tertulis');
-        $praktekScore = $request->input('n_praktek');
-        
-        $k = 3; // Jumlah tetangga terdekat yang akan dipertimbangkan
-
-        // Ambil semua data pelamar dari database
-        $allInterviews = Interview::all();
-
-        // Hitung jarak antara data input dengan semua data pelamar
-        $distances = [];
-        foreach ($allInterviews as $allInterview) {
-            $distances[$allInterview->id] = $this->euclideanDistance($allInterview, (object) compact('komunScore', 'jujurScore', 'sopanScore', 'psikotesScore', 'tulisScore', 'praktekScore'));
-        }
-
-        // Urutkan jarak dari yang terdekat ke yang terjauh
-        asort($distances);
-
-        // Ambil K tetangga terdekat
-        $nearestNeighbors = array_slice($distances, 0, $k, true);
-
-        // Hitung jumlah pelamar yang diterima dan yang gagal di antara tetangga terdekat
-        $lulusCount = 0;
-        $gagalCount = 0;
-        foreach ($nearestNeighbors as $id => $distance) {
-            $allInterview = Interview::find($id);
-            if ($allInterview->is_accepted) {
-                $lulusCount++;
-            } else {
-                $gagalCount++;
-            }
-        }
-
-        // Tentukan hasil klasifikasi berdasarkan mayoritas
-        $result = $lulusCount > $gagalCount ? 'Lulus' : 'Gagal';
-
-        return response()->json(['result' => $result]);
-    
-
+        //
     }
 
     /**
@@ -150,19 +107,61 @@ return $array_min;
      */
     public function show(string $id)
     {
-        $k = 3; // Jumlah tetangga terdekat yang akan dipertimbangkan
+        $point1 = DataTraining::select('id', 'nama', 'komun', 'kejur', 'kesop', 'keprib', 'penget', 'praktek', 'hasil')->get();
+        // return $point1;
+        $hasil = $point1->pluck('hasil')->toArray();
 
-        // Ambil semua data pelamar dari database
-        $allInterviews = Interview::all();
 
-        // Hitung jarak antara data input dengan semua data pelamar
-        $distances = [];
-        foreach ($allInterviews as $allInterview) {
-            $distances[$allInterview->id] = $this->euclideanDistance($allInterview, (object) compact('komunScore', 'jujurScore', 'sopanScore', 'psikotesScore', 'tulisScore', 'praktekScore'));
+        foreach ($point1 as $data) {
+            $array = [
+                intval($data->komun),
+                intval($data->kejur),
+                intval($data->kesop),
+                intval($data->keprib),
+                intval($data->penget),
+                intval($data->praktek),
+            ];
+
+            $result[] = $array;
         }
 
-        // Urutkan jarak dari yang terdekat ke yang terjauh
-       return asort($distances);
+        $classifier = new KNearestNeighbors($k = 5);
+         $classifier->train($result, $hasil);
+
+        // return $classifier;
+
+        $point2 = Interview::select('user_name', 'n_komun', 'n_kejujuran', 'n_kesop', 'n_psikotes', 'n_tertulis', 'n_praktek')->get();
+
+        foreach ($point2 as $data) {
+            $array = [
+                intval($data->n_komun),
+                intval($data->n_kejujuran),
+                intval($data->n_kesop),
+                intval($data->n_psikotes),
+                intval($data->n_tertulis),
+                intval($data->n_praktek),
+            ];
+
+            $result2[] = $array;
+        }
+
+        $prediksi = $classifier->predict($result2);
+        // return $prediksi;
+
+        $i = 0;
+        foreach ($point2 as $data) {
+            $array = [
+                'nama' => $data->user_name,
+                'prediksi' => $prediksi[$i]
+            ];
+            $i++;
+
+            $result3[] = $array;
+        }
+
+        return Datatables::of($result3)
+            ->addIndexColumn()
+            ->make(true);
     }
 
     /**
